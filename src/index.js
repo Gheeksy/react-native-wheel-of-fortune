@@ -319,7 +319,7 @@ class WheelOfFortune extends Component {
                 ? this.props.options.knobSource
                 : require('../assets/images/knob.png')
             }
-            style={{ width: knobSize, height: (knobSize * 100) / 57 }}
+            style={{ width: knobSize, height: (knobSize * 100) / 57, aspectRatio: 0.8 }}
           />
         </Svg>
       </Animated.View>
