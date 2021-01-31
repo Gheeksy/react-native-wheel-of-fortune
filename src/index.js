@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,28 +9,32 @@ import {
 } from 'react-native';
 import * as d3Shape from 'd3-shape';
 
-import Svg, {G, Text, TSpan, Path, Pattern} from 'react-native-svg';
+import Svg, { G, Text, TSpan, Path, Pattern } from 'react-native-svg';
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
-const {width, height} = Dimensions.get('screen');
-
 class WheelOfFortune extends Component {
+  width;
+  height;
+
   constructor(props) {
     super(props);
+    this.width = this.props.width;
+    this.height = this.props.width;
+
     this.state = {
       enabled: false,
       started: false,
       finished: false,
       winner: null,
-      gameScreen: new Animated.Value(width - 40),
+      gameScreen: new Animated.Value(this.width - 40),
       wheelOpacity: new Animated.Value(1),
-      imageLeft: new Animated.Value(width / 2 - 30),
-      imageTop: new Animated.Value(height / 2 - 70),
+      imageLeft: new Animated.Value(this.width / 2 - 30),
+      imageTop: new Animated.Value(this.height / 2 - 70),
     };
-    this.angle = 0;
 
     this.prepareWheel();
+    this.angle = 0;
   }
 
   prepareWheel = () => {
@@ -58,10 +62,10 @@ class WheelOfFortune extends Component {
       started: false,
       finished: false,
       winner: null,
-      gameScreen: new Animated.Value(width - 40),
+      gameScreen: new Animated.Value(this.width - 40),
       wheelOpacity: new Animated.Value(1),
-      imageLeft: new Animated.Value(width / 2 - 30),
-      imageTop: new Animated.Value(height / 2 - 70),
+      imageLeft: new Animated.Value(this.width / 2 - 30),
+      imageTop: new Animated.Value(this.height / 2 - 70),
     });
   };
 
@@ -94,27 +98,27 @@ class WheelOfFortune extends Component {
   }
 
   makeWheel = () => {
-    const data = Array.from({length: this.numberOfSegments}).fill(1);
+    const data = Array.from({ length: this.numberOfSegments }).fill(1);
     const arcs = d3Shape.pie()(data);
     var colors = this.props.options.colors
       ? this.props.options.colors
       : [
-          '#E07026',
-          '#E8C22E',
-          '#ABC937',
-          '#4F991D',
-          '#22AFD3',
-          '#5858D0',
-          '#7B48C8',
-          '#D843B9',
-          '#E23B80',
-          '#D82B2B',
-        ];
+        '#E07026',
+        '#E8C22E',
+        '#ABC937',
+        '#4F991D',
+        '#22AFD3',
+        '#5858D0',
+        '#7B48C8',
+        '#D843B9',
+        '#E23B80',
+        '#D82B2B',
+      ];
     return arcs.map((arc, index) => {
       const instance = d3Shape
         .arc()
         .padAngle(0.01)
-        .outerRadius(width / 2)
+        .outerRadius(this.width / 2)
         .innerRadius(this.props.options.innerRadius || 100);
       return {
         path: instance(arc),
@@ -170,7 +174,7 @@ class WheelOfFortune extends Component {
       }
       textAnchor="middle"
       fontSize={this.fontSize}>
-      {Array.from({length: number.length}).map((_, j) => {
+      {Array.from({ length: number.length }).map((_, j) => {
         // Render reward text vertically
         if (this.props.options.textAngle === 'vertical') {
           return (
@@ -217,9 +221,9 @@ class WheelOfFortune extends Component {
             backgroundColor: this.props.options.backgroundColor
               ? this.props.options.backgroundColor
               : '#fff',
-            width: width - 20,
-            height: width - 20,
-            borderRadius: (width - 20) / 2,
+            width: this.width - 20,
+            height: this.width - 20,
+            borderRadius: (this.width - 20) / 2,
             borderWidth: this.props.options.borderWidth
               ? this.props.options.borderWidth
               : 2,
@@ -231,12 +235,12 @@ class WheelOfFortune extends Component {
           <AnimatedSvg
             width={this.state.gameScreen}
             height={this.state.gameScreen}
-            viewBox={`0 0 ${width} ${width}`}
+            viewBox={`0 0 ${this.width} ${this.width}`}
             style={{
-              transform: [{rotate: `-${this.angleOffset}deg`}],
+              transform: [{ rotate: `-${this.angleOffset}deg` }],
               margin: 10,
             }}>
-            <G y={width / 2} x={width / 2}>
+            <G y={this.width / 2} x={this.width / 2}>
               {this._wheelPaths.map((arc, i) => {
                 const [x, y] = arc.centroid;
                 const number = arc.value.toString();
@@ -307,7 +311,7 @@ class WheelOfFortune extends Component {
           height={(knobSize * 100) / 57}
           viewBox={`0 0 57 100`}
           style={{
-            transform: [{translateY: 8}],
+            transform: [{ translateY: 8 }],
           }}>
           <Image
             source={
@@ -338,12 +342,12 @@ class WheelOfFortune extends Component {
         <TouchableOpacity
           style={{
             position: 'absolute',
-            width: width,
-            height: height / 2,
+            width: this.width,
+            height: this.height / 2,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Animated.View style={[styles.content, {padding: 10}]}>
+          <Animated.View style={[styles.content, { padding: 10 }]}>
             {this._renderSvgWheel()}
           </Animated.View>
         </TouchableOpacity>
@@ -367,7 +371,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.4)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
   },
 });
