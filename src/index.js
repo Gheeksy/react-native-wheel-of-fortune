@@ -340,6 +340,7 @@ class WheelOfFortune extends Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity
+          activeOpacity={1}
           style={{
             position: 'absolute',
             width: this.width,
